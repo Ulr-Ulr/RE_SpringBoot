@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.dao.MemberDAO">
+<!-- 전제보기 -->
+   <select id="allMember"
+           resultType="MemberVO">
+      SELECT 	ID, USER_ID, USER_PW, USER_NAME, USER_EMAIL, USER_AUTHOR
+      FROM		MEMBERS
+   </select>
+   
+    <select id="findId"
+    	   parameterType="string"
+           resultType="MemberVO">
+   <!-- ID검색 -->
+   	   SELECT 	ID, USER_ID, USER_PW, USER_NAME, USER_EMAIL, USER_AUTHOR
+      FROM		MEMBERS
+      WHERE ID= #{ID}
+      </select>
+      <insert id="addMember"
+      parameterType="MemberVO">
+     	 INSERT INTO MEMBERS
+				( ID
+				  , USER_ID
+				  , USER_PW
+				  , USER_NAME
+				  , USER_EMAIL
+				  , USER_AUTHOR
+				  , REG_DATE )
+			VALUES ( (
+						SELECT MAX(ID)+1
+						FROM MEMBERS
+					)
+				  , #{user_id}
+				  , #{user_pw}
+				  , #{user_name}
+				  , #{user_email}
+				  , 'user'
+				  , sysdate
+				  )
+      </insert>
+
+</mapper>
